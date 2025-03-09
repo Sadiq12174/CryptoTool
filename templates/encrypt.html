@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encrypt - Cryptography Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .drag-area {
+            border: 2px dashed #cbd5e1;
+            transition: all 0.3s ease;
+        }
+        .drag-area.active {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-10">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg mb-8 rounded-lg">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between">
+                <div class="flex space-x-7">
+                    <a href="{{ url_for('index') }}" class="flex items-center py-4">
+                        <span class="font-semibold text-gray-800 text-lg">🔐 Crypto Tool</span>
+                    </a>
+                </div>
+                <div class="flex items-center space-x-1">
+                    <a href="{{ url_for('index') }}" class="py-2 px-4 text-gray-600 hover:bg-blue-100 rounded-lg">
+                        <i class="fas fa-home mr-2"></i>Home
+                    </a>
+                    <a href="{{ url_for('encrypt_page') }}" class="py-2 px-4 text-white bg-blue-600 rounded-lg">
+                        <i class="fas fa-lock mr-2"></i>Encrypt
+                    </a>
+                    <a href="{{ url_for('decrypt_page') }}" class="py-2 px-4 text-gray-600 hover:bg-blue-100 rounded-lg">
+                        <i class="fas fa-unlock mr-2"></i>Decrypt
+                    </a>
+                    <a href="{{ url_for('hash_page') }}" class="py-2 px-4 text-gray-600 hover:bg-blue-100 rounded-lg">
+                        <i class="fas fa-hashtag mr-2"></i>Hash
+                    </a>
+                    <a href="{{ url_for('encrypt_hash_page') }}" class="py-2 px-4 text-gray-600 hover:bg-blue-100 rounded-lg">
+                        <i class="fas fa-shield-alt mr-2"></i>Encrypt & Hash
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-6xl mx-auto">
+        <div class="bg-white p-8 rounded-xl shadow-lg">
+            <h2 class="text-2xl font-bold mb-6 text-blue-600">🔒 Encrypt Your Data</h2>
+            
+            <!-- Two Column Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Left Column - Upload Section -->
+                <div class="space-y-6">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <!-- File Type Selection -->
+                        <div class="flex flex-wrap gap-4 justify-center mb-6">
+                            <label class="flex items-center space-x-2 cursor-pointer hover:text-blue-600 transition-colors">
+                                <input type="radio" name="encryptType" value="text" checked class="form-radio text-blue-600">
+                                <span>📝 Text</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer hover:text-blue-600 transition-colors">
+                                <input type="radio" name="encryptType" value="image" class="form-radio text-blue-600">
+                                <span>🖼️ Image</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer hover:text-blue-600 transition-colors">
+                                <input type="radio" name="encryptType" value="audio" class="form-radio text-blue-600">
+                                <span>🎵 Audio</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer hover:text-blue-600 transition-colors">
+                                <input type="radio" name="encryptType" value="video" class="form-radio text-blue-600">
+                                <span>🎥 Video</span>
+                            </label>
+                        </div>
+                        <!-- Algorithm Selection -->
+                        <select id="encryptAlgorithm" class="w-full mb-6 p-3 border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="aes">🛡️ AES-256 (Advanced Encryption Standard)</option>
+                            <option value="des">🔐 3DES (Triple DES)</option>
+                            <option value="blowfish">🐡 Blowfish</option>
+                            <option value="rsa">🔑 RSA (Public Key)</option>
+                        </select>
+                        <!-- File Upload Section -->
+                        <div class="mb-6">
+                            <div class="flex flex-col items-center gap-4">
+                                <!-- Add Text Input Area -->
+                                <div class="w-full mb-4">
+                                    <textarea id="encryptText" placeholder="Enter text to encrypt..." rows="4" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+                                </div>
+                                <div class="w-full text-center text-gray-600 mb-2">- OR -</div>
+                                <label for="encryptFile" class="bg-blue-500 hover:bg-blue-600 text-white py-3 px-6 rounded-lg cursor-pointer transition-colors w-full text-center">
+                                    <i class="fas fa-file-upload mr-2"></i>Select File
+                                    <input type="file" id="encryptFile" class="hidden" onchange="handleFileSelect(this)">
+                                </label>
+                                <div id="fileInfo" class="w-full bg-white p-4 rounded-lg hidden">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <i class="fas fa-file mr-2 text-blue-500"></i>
+                                            <span id="fileName">No file selected</span>
+                                        </div>
+                                        <button onclick="removeFile()" class="text-blue-500 hover:text-blue-600">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="text" id="encryptKey" placeholder="🔑 Enter Secret Key" class="w-full mb-6 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        
+                        <button onclick="encryptFile()" class="bg-blue-600 hover:bg-blue-700 text-white py-4 px-6 rounded-lg w-full transition duration-300 flex items-center justify-center space-x-2">
+                            <span class="loading hidden">⏳</span>
+                            <i class="fas fa-lock mr-2"></i>
+                            <span class="normal">Encrypt File</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Right Column - Preview and Output -->
+                <div class="space-y-6">
+                    <!-- Preview Area -->
+                    <div id="encryptPreview" class="hidden">
+                        <h3 class="font-bold text-lg mb-4">File Preview</h3>
+                        <div class="bg-gray-50 p-6 rounded-lg">
+                            <img id="encryptPreviewImage" class="max-h-40 mx-auto mb-2 hidden rounded">
+                            <audio id="encryptPreviewAudio" controls class="w-full mb-2 hidden"></audio>
+                            <video id="encryptPreviewVideo" controls class="w-full mb-2 hidden rounded"></video>
+                            <p id="encryptPreviewText" class="text-sm text-gray-600"></p>
+                        </div>
+                    </div>
+                    <!-- Output Area -->
+                    <!-- Replace the existing Output Area with this -->
+                    <div id="encryptOutput" class="hidden">
+                        <h3 class="font-bold text-lg mb-4">Encrypted Output</h3>
+                        <div class="bg-gray-50 p-6 rounded-lg space-y-4">
+                            <!-- Text output area -->
+                            <div id="textOutputArea" class="hidden">
+                                <textarea id="encryptedTextOutput" class="w-full p-3 border rounded-lg mb-4 bg-white" rows="4" readonly></textarea>
+                                <button id="copyButton" onclick="copyEncryptedText()" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg inline-flex items-center mb-4">
+                                    <i class="fas fa-copy mr-2"></i>
+                                    <span>Copy Encrypted Text</span>
+                                </button>
+                            </div>
+                            <!-- File info area -->
+                            <div id="fileInfoOutput" class="hidden">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center">
+                                        <i id="fileTypeIcon" class="fas fa-file mr-2 text-blue-500"></i>
+                                        <span id="outputFileName" class="text-gray-700"></span>
+                                    </div>
+                                    <span id="outputFileSize" class="text-sm text-gray-500"></span>
+                                </div>
+                            </div>
+                            <!-- Download button -->
+                            <a id="encryptedFileLink" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg inline-flex items-center">
+                                <i class="fas fa-download mr-2"></i>
+                                <span>Download Encrypted File</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="static/js/encrypt.js"></script>
+</body>
+</html>

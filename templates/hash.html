@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hash Generator - Cryptography Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .drag-area {
+            border: 2px dashed #cbd5e1;
+            transition: all 0.3s ease;
+        }
+        .drag-area.active {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-10">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg mb-8 rounded-lg">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between">
+                <div class="flex space-x-7">
+                    <a href="{{ url_for('index') }}" class="flex items-center py-4">
+                        <span class="font-semibold text-gray-800 text-lg">🔐 Crypto Tool</span>
+                    </a>
+                </div>
+                <div class="flex items-center space-x-1">
+                    <a href="{{ url_for('index') }}" class="py-2 px-4 text-gray-600 hover:bg-blue-100 rounded-lg">
+                        <i class="fas fa-home mr-2"></i>Home
+                    </a>
+                    <a href="{{ url_for('encrypt_page') }}" class="py-2 px-4 text-gray-600 hover:bg-blue-100 rounded-lg">
+                        <i class="fas fa-lock mr-2"></i>Encrypt
+                    </a>
+                    <a href="{{ url_for('decrypt_page') }}" class="py-2 px-4 text-gray-600 hover:bg-blue-100 rounded-lg">
+                        <i class="fas fa-unlock mr-2"></i>Decrypt
+                    </a>
+                    <a href="{{ url_for('hash_page') }}" class="py-2 px-4 text-white bg-blue-600 rounded-lg">
+                        <i class="fas fa-hashtag mr-2"></i>Hash
+                    </a>
+                    <a href="{{ url_for('encrypt_hash_page') }}" class="py-2 px-4 text-gray-600 hover:bg-blue-100 rounded-lg">
+                        <i class="fas fa-shield-alt mr-2"></i>Encrypt & Hash
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-6xl mx-auto">
+        <div class="bg-white p-8 rounded-xl shadow-lg">
+            <h2 class="text-2xl font-bold mb-6 text-yellow-600">🔗 Generate Hash</h2>
+            
+            <!-- Two Column Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Left Column - Upload Section -->
+                <div class="space-y-6">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <!-- File Type Selection -->
+                        <div class="flex flex-wrap gap-4 justify-center mb-6">
+                            <label class="flex items-center space-x-2 cursor-pointer hover:text-yellow-600 transition-colors">
+                                <input type="radio" name="hashType" value="text" checked class="form-radio text-yellow-600">
+                                <span>📝 Text</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer hover:text-yellow-600 transition-colors">
+                                <input type="radio" name="hashType" value="image" class="form-radio text-yellow-600">
+                                <span>🖼️ Image</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer hover:text-yellow-600 transition-colors">
+                                <input type="radio" name="hashType" value="audio" class="form-radio text-yellow-600">
+                                <span>🎵 Audio</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer hover:text-yellow-600 transition-colors">
+                                <input type="radio" name="hashType" value="video" class="form-radio text-yellow-600">
+                                <span>🎥 Video</span>
+                            </label>
+                        </div>
+                        
+                        <!-- Algorithm Selection -->
+                        <select id="hashAlgorithm" class="w-full mb-6 p-3 border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                            <option value="sha256">SHA-256 (Secure Hash Algorithm 256-bit)</option>
+                            <option value="sha512">SHA-512 (Secure Hash Algorithm 512-bit)</option>
+                            <option value="md5">MD5 (Message Digest Algorithm)</option>
+                            <option value="blake2b">BLAKE2b</option>
+                        </select>
+                        
+                        <!-- File Upload Section -->
+                        <div class="mb-6">
+                            <div class="flex flex-col items-center gap-4">
+                                <label for="hashFile" class="bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-6 rounded-lg cursor-pointer transition-colors w-full text-center">
+                                    <i class="fas fa-file-upload mr-2"></i>Select File
+                                    <input type="file" id="hashFile" class="hidden" onchange="handleFileSelect(this)">
+                                </label>
+                                <div id="fileInfo" class="w-full bg-white p-4 rounded-lg hidden">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <i class="fas fa-file mr-2 text-yellow-500"></i>
+                                            <span id="fileName">No file selected</span>
+                                        </div>
+                                        <button onclick="removeFile()" class="text-yellow-500 hover:text-yellow-600">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button onclick="generateHash()" class="bg-yellow-600 hover:bg-yellow-700 text-white py-4 px-6 rounded-lg w-full transition duration-300 flex items-center justify-center space-x-2">
+                            <span class="loading hidden">⏳</span>
+                            <i class="fas fa-hashtag mr-2"></i>
+                            <span class="normal">Generate Hash</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Right Column - Preview and Output -->
+                <div class="space-y-6">
+                    <!-- Preview Area -->
+                    <div id="hashPreview" class="hidden">
+                        <h3 class="font-bold text-lg mb-4">File Preview</h3>
+                        <div class="bg-gray-50 p-6 rounded-lg">
+                            <img id="hashPreviewImage" class="max-h-40 mx-auto mb-2 hidden rounded">
+                            <audio id="hashPreviewAudio" controls class="w-full mb-2 hidden"></audio>
+                            <video id="hashPreviewVideo" controls class="w-full mb-2 hidden rounded"></video>
+                            <p id="hashPreviewText" class="text-sm text-gray-600"></p>
+                        </div>
+                    </div>
+                    
+                    <!-- Hash Output -->
+                    <div id="hashOutput" class="hidden">
+                        <h3 class="font-bold text-lg mb-4">Results</h3>
+                        <div class="space-y-4">
+                            <!-- Original File Download -->
+                            <div id="originalFileSection" class="bg-gray-50 p-6 rounded-lg">
+                                <h4 class="font-semibold mb-3">Original File</h4>
+                                <a id="originalFileLink" class="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-lg inline-flex items-center">
+                                    <i class="fas fa-download mr-2"></i>
+                                    Download File with Hash
+                                </a>
+                            </div>
+                            
+                            <!-- Hash Result Section -->
+                            <div class="bg-gray-50 p-6 rounded-lg">
+                                <h4 class="font-semibold mb-3">Generated Hash</h4>
+                                <div class="flex items-center space-x-2">
+                                    <code id="hashValue" class="bg-gray-100 p-3 rounded flex-1 font-mono text-sm break-all"></code>
+                                    <button onclick="copyHash()" class="bg-gray-200 p-3 rounded hover:bg-gray-300 transition-colors">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="static/js/hash.js"></script>
+</body>
+</html>

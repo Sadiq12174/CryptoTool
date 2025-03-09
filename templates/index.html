@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptography Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Add Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Add navigation styles */
+        .nav-link {
+            transition: all 0.3s ease;
+        }
+        .nav-link.active {
+            background-color: #3b82f6;
+            color: white !important;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .drag-area {
+            border: 2px dashed #cbd5e1;
+            transition: all 0.3s ease;
+        }
+        .drag-area.active {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-10">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg mb-8 rounded-lg">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between">
+                <div class="flex space-x-7">
+                    <a href="{{ url_for('index') }}" class="flex items-center py-4">
+                        <span class="font-semibold text-gray-800 text-lg">🔐 Crypto Tool</span>
+                    </a>
+                </div>
+                <div class="flex items-center space-x-1">
+                    <a href="{{ url_for('index') }}" class="nav-link py-2 px-4 text-gray-600 hover:bg-blue-100 rounded-lg">
+                        <i class="fas fa-home mr-2"></i>Home
+                    </a>
+                    <a href="{{ url_for('encrypt_page') }}" class="nav-link py-2 px-4 text-gray-600 hover:bg-blue-100 rounded-lg">
+                        <i class="fas fa-lock mr-2"></i>Encrypt
+                    </a>
+                    <a href="{{ url_for('decrypt_page') }}" class="nav-link py-2 px-4 text-gray-600 hover:bg-blue-100 rounded-lg">
+                        <i class="fas fa-unlock mr-2"></i>Decrypt
+                    </a>
+                    <a href="{{ url_for('hash_page') }}" class="nav-link py-2 px-4 text-gray-600 hover:bg-blue-100 rounded-lg">
+                        <i class="fas fa-hashtag mr-2"></i>Hash
+                    </a>
+                    <a href="{{ url_for('encrypt_hash_page') }}" class="nav-link py-2 px-4 text-gray-600 hover:bg-blue-100 rounded-lg">
+                        <i class="fas fa-shield-alt mr-2"></i>Encrypt & Hash
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    
+
+       
+       
+
+       
+
+<!-- Add this new section before other content sections -->
+<!-- Home Section -->
+<div class="content-section active" id="homeSection">
+    <div class="max-w-4xl mx-auto">
+        <!-- Hero Section -->
+        <div class="bg-white rounded-2xl shadow-xl p-8 mb-8 text-center">
+            <h2 class="text-4xl font-bold text-gray-800 mb-4">Welcome to Cryptography Tool</h2>
+            <p class="text-gray-600 text-lg mb-6">
+                A comprehensive solution for all your data security needs. Protect your files with 
+                advanced cryptographic algorithms and secure hashing techniques.
+            </p>
+        </div>
+         <!-- Algorithm Information Section -->
+         <div class="bg-gradient-to-r from-blue-50 to-green-50 rounded-2xl p-8 mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Encryption & Hashing Algorithms</h3>
+            <p class="text-gray-600 text-center mb-8">Securing the Digital World with Advanced Cryptographic Solutions</p>
+            
+            <!-- Encryption Algorithms -->
+            <div class="mb-10">
+                <h4 class="text-xl font-semibold text-blue-600 mb-6 flex items-center">
+                    <i class="fas fa-lock mr-2"></i>Encryption Algorithms
+                </h4>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- AES-256 -->
+                    <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1">
+                        <div class="flex items-center mb-3">
+                            <span class="text-2xl mr-3">🛡️</span>
+                            <h5 class="font-bold text-lg">AES-256</h5>
+                        </div>
+                        <p class="text-gray-600">Advanced Encryption Standard with 256-bit key length. The gold standard for symmetric encryption, trusted by governments and enterprises worldwide.</p>
+                    </div>
+
+                    <!-- 3DES -->
+                    <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1">
+                        <div class="flex items-center mb-3">
+                            <span class="text-2xl mr-3">🔐</span>
+                            <h5 class="font-bold text-lg">3DES</h5>
+                        </div>
+                        <p class="text-gray-600">Triple Data Encryption Standard applies encryption three times. Legacy system still used in financial services for backward compatibility.</p>
+                    </div>
+
+                    <!-- Blowfish -->
+                    <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1">
+                        <div class="flex items-center mb-3">
+                            <span class="text-2xl mr-3">⚡</span>
+                            <h5 class="font-bold text-lg">Blowfish</h5>
+                        </div>
+                        <p class="text-gray-600">Fast and flexible symmetric encryption with variable key length. Perfect for high-speed encryption needs and resource-constrained systems.</p>
+                    </div>
+
+                    <!-- RSA -->
+                    <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1">
+                        <div class="flex items-center mb-3">
+                            <span class="text-2xl mr-3">🔑</span>
+                            <h5 class="font-bold text-lg">RSA</h5>
+                        </div>
+                        <p class="text-gray-600">Public-key cryptography system using different keys for encryption and decryption. Essential for secure communications and digital signatures.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hash Algorithms -->
+            <div>
+                <h4 class="text-xl font-semibold text-green-600 mb-6 flex items-center">
+                    <i class="fas fa-hashtag mr-2"></i>Hash Algorithms
+                </h4>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- SHA-256 -->
+                    <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1">
+                        <div class="flex items-center mb-3">
+                            <span class="text-2xl mr-3">📊</span>
+                            <h5 class="font-bold text-lg">SHA-256</h5>
+                        </div>
+                        <p class="text-gray-600">Industry-standard hash function producing 256-bit output. Widely used in blockchain technology and digital certificates.</p>
+                    </div>
+
+                    <!-- SHA-512 -->
+                    <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1">
+                        <div class="flex items-center mb-3">
+                            <span class="text-2xl mr-3">🔒</span>
+                            <h5 class="font-bold text-lg">SHA-512</h5>
+                        </div>
+                        <p class="text-gray-600">Enhanced version of SHA-2 with 512-bit output. Provides extra security for critical applications and long-term data integrity.</p>
+                    </div>
+
+                    <!-- MD5 -->
+                    <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1">
+                        <div class="flex items-center mb-3">
+                            <span class="text-2xl mr-3">⚠️</span>
+                            <h5 class="font-bold text-lg">MD5</h5>
+                        </div>
+                        <p class="text-gray-600">Legacy 128-bit hash function. While fast and widely supported, it's not recommended for security-critical applications due to vulnerabilities.</p>
+                    </div>
+
+                    <!-- BLAKE2b -->
+                    <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1">
+                        <div class="flex items-center mb-3">
+                            <span class="text-2xl mr-3">⚡</span>
+                            <h5 class="font-bold text-lg">BLAKE2b</h5>
+                        </div>
+                        <p class="text-gray-600">Modern, high-performance cryptographic hash function. Faster than MD5 and SHA while maintaining excellent security properties.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <!-- Encrypt Card -->
+            <a href="{{ url_for('encrypt_page') }}" class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer">
+                <div class="text-blue-500 text-3xl mb-4">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3 class="font-bold text-xl mb-2">Encrypt</h3>
+                <p class="text-sm text-gray-600">Secure your sensitive data with powerful encryption</p>
+            </a>
+
+            <!-- Decrypt Card -->
+            <a href="{{ url_for('decrypt_page') }}" class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer">
+                <div class="text-red-500 text-3xl mb-4">
+                    <i class="fas fa-unlock"></i>
+                </div>
+                <h3 class="font-bold text-xl mb-2">Decrypt</h3>
+                <p class="text-sm text-gray-600">Recover your encrypted data securely</p>
+            </a>
+
+            <!-- Hash Card -->
+            <a href="{{ url_for('hash_page') }}" class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer">
+                <div class="text-yellow-500 text-3xl mb-4">
+                    <i class="fas fa-hashtag"></i>
+                </div>
+                <h3 class="font-bold text-xl mb-2">Generate Hash</h3>
+                <p class="text-sm text-gray-600">Create unique digital signatures</p>
+            </a>
+
+            <!-- Encrypt & Hash Card -->
+            <a href="{{ url_for('encrypt_hash_page') }}" class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer">
+                <div class="text-green-500 text-3xl mb-4">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="font-bold text-xl mb-2">Encrypt & Hash</h3>
+                <p class="text-sm text-gray-600">Double protection for critical data</p>
+            </a>
+        </div>
+               
+        
+               
+        <!-- About Section -->
+        <div class="bg-blue-50 rounded-2xl p-8 mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">About Our Tool</h3>
+            <p class="text-gray-600 mb-4">
+                Our cryptography tool provides state-of-the-art security features for protecting your digital assets. 
+                Whether you need to encrypt sensitive files, verify data integrity, or secure your communications, 
+                we've got you covered.
+            </p>
+            <div class="grid md:grid-cols-3 gap-4 mt-6">
+                <div class="bg-white p-4 rounded-lg">
+                    <i class="fas fa-shield-alt text-blue-500 text-xl mb-2"></i>
+                    <h4 class="font-bold mb-1">Secure</h4>
+                    <p class="text-sm text-gray-600">Military-grade security algorithms</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg">
+                    <i class="fas fa-bolt text-yellow-500 text-xl mb-2"></i>
+                    <h4 class="font-bold mb-1">Fast</h4>
+                    <p class="text-sm text-gray-600">Quick and efficient processing</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg">
+                    <i class="fas fa-user-shield text-green-500 text-xl mb-2"></i>
+                    <h4 class="font-bold mb-1">Private</h4>
+                    <p class="text-sm text-gray-600">Client-side processing</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update the showSection function -->
+<script>
+function showSection(sectionId) {
+    // Remove active class from all nav links
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+    
+    // Hide all sections
+    document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
+    });
+
+    // Show selected section and activate nav link
+    if (sectionId === 'all') {
+        document.querySelectorAll('.content-section').forEach(section => {
+            section.classList.add('active');
+        });
+        document.querySelector('.nav-link[onclick="showSection(\'all\')"]').classList.add('active');
+    } else {
+        document.getElementById(sectionId).classList.add('active');
+        document.querySelector(`.nav-link[onclick="showSection('${sectionId}')"]`).classList.add('active');
+    }
+}
+
+// Initialize with encrypt section active
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('.nav-link[onclick="showSection(\'encryptSection\')"]').classList.add('active');
+});
+
+    // Drag and drop functionality
+    function initDragDrop(dragArea, fileInput) {
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dragArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dragArea.addEventListener(eventName, () => {
+                dragArea.classList.add('active');
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dragArea.addEventListener(eventName, () => {
+                dragArea.classList.remove('active');
+            });
+        });
+
+        dragArea.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            fileInput.files = files;
+            handleFileSelect(fileInput);
+        });
+
+        dragArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+    }
+
+    // File preview functionality
+    function handleFileSelect(input) {
+        const file = input.files[0];
+        const preview = document.getElementById(input.id + 'Preview');
+        const previewImage = document.getElementById(input.id + 'PreviewImage');
+        const previewAudio = document.getElementById(input.id + 'PreviewAudio');
+        const previewVideo = document.getElementById(input.id + 'PreviewVideo');
+        const previewText = document.getElementById(input.id + 'PreviewText');
+
+        preview.classList.remove('hidden');
+        previewImage.classList.add('hidden');
+        previewAudio.classList.add('hidden');
+        previewVideo.classList.add('hidden');
+        previewText.textContent = `Selected: ${file.name} (${formatFileSize(file.size)})`;
+
+        if (file.type.startsWith('image/')) {
+            previewImage.src = URL.createObjectURL(file);
+            previewImage.classList.remove('hidden');
+        } else if (file.type.startsWith('audio/')) {
+            previewAudio.src = URL.createObjectURL(file);
+            previewAudio.classList.remove('hidden');
+        } else if (file.type.startsWith('video/')) {
+            previewVideo.src = URL.createObjectURL(file);
+            previewVideo.classList.remove('hidden');
+        }
+    }
+
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // Initialize drag and drop for all sections
+    document.addEventListener('DOMContentLoaded', () => {
+        const sections = ['encrypt', 'hash', 'encryptHash', 'decrypt'];
+        sections.forEach(section => {
+            const dragArea = document.getElementById(`${section}DragArea`);
+            const fileInput = document.getElementById(`${section}File`);
+            if (dragArea && fileInput) {
+                initDragDrop(dragArea, fileInput);
+                fileInput.addEventListener('change', () => handleFileSelect(fileInput));
+            }
+        });
+    });
+
+    // Keep your existing async functions
+    async function encryptFile() {
+        // Your existing encrypt function
+    }
+
+    async function decryptFile() {
+        // Your existing decrypt function
+    }
+
+    async function generateHash() {
+        // Your existing hash function
+    }
+
+    async function encryptAndHashFile() {
+        // Your existing encrypt and hash function
+    }
+</script>
+</body>
+</html>
